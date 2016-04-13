@@ -1,12 +1,9 @@
-FROM centos:centos7
-
-MAINTAINER lonnie.baldwin@gmail.com
-
-RUN yum -y install epel-release golang
-
-COPY . /src
-
-RUN cd /src ; go run *.go
+FROM golang:latest 
+RUN mkdir /app 
+ADD . /app/ 
+WORKDIR /app 
+RUN go build -o main . 
+CMD ["/app/main"]
 
 EXPOSE 8080
 
