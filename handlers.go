@@ -83,25 +83,24 @@ func TodoCreate(w http.ResponseWriter, r *http.Request) {
 func TodoDestroy(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	var todoId int
+
 	var err error
 	if todoId, err = strconv.Atoi(vars["todoId"]); err != nil {
 		panic(err)
 	}
-	todo := RepoDestroyTodo(todoId)
+	todo := RepoFindTodo(todoId)
 	if todo.Id > 0 {
+		t := RepoDestroyTodo(todoId)
+
 		w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 		w.WriteHeader(http.StatusOK)
-		if err := json.NewEncoder(w).Encode(todo); err != nil {
+
+		if t != nil {
+			w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+			w.WriteHeader(http.StatusNotFound)
 			panic(err)
 		}
-		return
-	}
 
-	// If we didn't find it, 404
-	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-	w.WriteHeader(http.StatusNotFound)
-	if err := json.NewEncoder(w).Encode(jsonErr{Code: http.StatusNotFound, Text: "Not Found"}); err != nil {
-		panic(err)
 	}
 
 }

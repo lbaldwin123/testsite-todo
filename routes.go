@@ -37,7 +37,7 @@ var routes = Routes{
 		TodoShow,
 	},
 	Route{
-		"TodoShow",
+		"TodoDestroy",
 		"DELETE",
 		"/todos/{todoId}",
 		TodoDestroy,
